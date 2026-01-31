@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Personal Diary | FB Style</title>
     <style>
-        :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; }
+        :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; --fb-red: #f02849; }
         body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
         
         /* Header & Profile Section */
@@ -35,13 +35,17 @@
         
         #admin-panel, #create-post { display: none; }
 
-        .post { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; }
+        .post { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; }
         .post-info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         .post-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .p-name { font-weight: bold; font-size: 0.9rem; }
         .p-date { font-size: 0.75rem; color: var(--fb-gray); }
         .post-text { font-size: 0.95rem; line-height: 1.5; margin-bottom: 10px; white-space: pre-wrap; }
         .post-img { width: calc(100% + 24px); margin-left: -12px; margin-right: -12px; display: block; }
+
+        /* Delete Button Style */
+        .del-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--fb-gray); cursor: pointer; font-size: 18px; padding: 5px; border-radius: 50%; transition: background 0.3s; }
+        .del-btn:hover { background: #f2f2f2; color: var(--fb-red); }
 
         #lock-btn { position: fixed; bottom: 20px; right: 20px; background: white; border: 1px solid #ddd; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 100; font-size: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
     </style>
@@ -63,11 +67,16 @@
 
 <div class="content-container">
     <div class="sidebar">
-        <div class="card">
-            <h3>Intro</h3>
-            <p>🌎 Daily Updates</p>
-            <p>📅 Started @2026</p>
-            <p id="post-stat">Posts: 0</p>
+       <div class="card">
+    <h3>Intro</h3>
+    <p style="font-style: italic; font-size: 0.85rem; color: var(--fb-gray);">
+        "A heart in pixels, a life in every post—<br>
+        The quiet updates that I value most."
+    </p>
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+    <p>🌎 Daily Updates</p>
+    <p>📅 Started @2026</p>
+    <p id="post-stat">Posts: 0</p>
         </div>
 
         <div id="admin-panel" class="card" style="background: #e7f3ff;">
@@ -99,7 +108,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPhyTW9u9mlECayKF-H6LnbBgUc0UAmzo",
@@ -113,6 +122,9 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    
+    // Global state for Admin
+    window.isAdmin = false;
 
     onValue(ref(db, 'profile'), (snap) => {
         const data = snap.val();
@@ -129,9 +141,21 @@
     window.askAdmin = () => {
         const pw = prompt("Password:");
         if(pw === "qu3113n3") {
+            window.isAdmin = true;
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('create-post').style.display = 'block';
+            // Refresh feed to show delete buttons
+            renderPosts();
             alert("Admin Access On!");
+        }
+    };
+
+    // Delete function
+    window.deletePost = (postId) => {
+        if(confirm("Sigurado ka bang gusto mong burahin ang post na ito?")) {
+            remove(ref(db, `posts/${postId}`))
+            .then(() => console.log("Post deleted"))
+            .catch((error) => alert("Error: " + error.message));
         }
     };
 
@@ -144,14 +168,8 @@
                 body: formData
             });
             const data = await res.json();
-            if (data && data.data && data.data.url) {
-                return data.data.url;
-            } else {
-                alert("Upload failed: " + (data.error ? data.error.message : "Error"));
-                return null;
-            }
+            return data?.data?.url || null;
         } catch (error) {
-            alert("Network Error: Hindi makakonekta sa ImgBB.");
             return null;
         }
     }   
@@ -163,21 +181,19 @@
         const ppFile = document.getElementById('new-pp').files[0];
         const coverFile = document.getElementById('new-cover').files[0];
 
-        status.innerText = "Updating... mangyaring maghintay.";
+        status.innerText = "Updating...";
         let pic = window.currentPP || "";
         let cover = window.currentCover || "";
 
         if(ppFile) pic = await uploadImage(ppFile);
         if(coverFile) cover = await uploadImage(coverFile);
 
-        const updatedData = {
+        set(ref(db, 'profile'), {
             name: nameInput || document.getElementById('author-name').innerText,
             bio: bioInput || document.getElementById('author-bio').innerText,
             pic: pic,
             cover: cover
-        };
-
-        set(ref(db, 'profile'), updatedData).then(() => {
+        }).then(() => {
             status.innerText = "Profile Updated!";
             document.getElementById('new-pp').value = "";
             document.getElementById('new-cover').value = "";
@@ -206,29 +222,38 @@
         });
     };
 
-    onValue(ref(db, 'posts'), (snap) => {
-        const feed = document.getElementById('feed');
-        feed.innerHTML = "";
-        if(snap.exists()){
-            const posts = Object.values(snap.val()).reverse();
-            document.getElementById('post-stat').innerText = `Posts: ${posts.length}`;
-            posts.forEach(post => {
-                feed.innerHTML += `
-                    <div class="post">
-                        <div class="post-info">
-                            <img src="${window.currentPP || 'https://via.placeholder.com/40'}">
-                            <div>
-                                <div class="p-name">${document.getElementById('author-name').innerText}</div>
-                                <div class="p-date">${post.date}</div>
+    function renderPosts() {
+        onValue(ref(db, 'posts'), (snap) => {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = "";
+            if(snap.exists()){
+                const data = snap.val();
+                const postIds = Object.keys(data).reverse();
+                document.getElementById('post-stat').innerText = `Posts: ${postIds.length}`;
+                
+                postIds.forEach(id => {
+                    const post = data[id];
+                    feed.innerHTML += `
+                        <div class="post">
+                            ${window.isAdmin ? `<button class="del-btn" onclick="deletePost('${id}')">🗑️</button>` : ''}
+                            <div class="post-info">
+                                <img src="${window.currentPP || 'https://via.placeholder.com/40'}">
+                                <div>
+                                    <div class="p-name">${document.getElementById('author-name').innerText}</div>
+                                    <div class="p-date">${post.date}</div>
+                                </div>
                             </div>
+                            <div class="post-text">${post.text}</div>
+                            ${post.image ? `<img src="${post.image}" class="post-img">` : ''}
                         </div>
-                        <div class="post-text">${post.text}</div>
-                        ${post.image ? `<img src="${post.image}" class="post-img">` : ''}
-                    </div>
-                `;
-            });
-        }
-    });
+                    `;
+                });
+            }
+        }, { onlyOnce: false });
+    }
+
+    // Initial Load
+    renderPosts();
 </script>
 </body>
 </html>

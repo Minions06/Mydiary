@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Personal Diary | Fixed</title>
+    <title>My Diary | Minimalist Music</title>
     <style>
         :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; }
         body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
@@ -11,7 +11,6 @@
         .header-card { background: white; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding-bottom: 20px; }
         .cover-container { width: 100%; max-width: 940px; height: 250px; background: #ddd; margin: 0 auto; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; overflow: hidden; }
         .cover-container img { width: 100%; height: 100%; object-fit: cover; }
-        
         .profile-bar { max-width: 940px; margin: -50px auto 0; padding: 0 30px; display: flex; align-items: flex-end; gap: 20px; }
         #profile-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid white; background: #eee; object-fit: cover; z-index: 1; }
         
@@ -19,19 +18,19 @@
         @media (max-width: 850px) { .content-container { grid-template-columns: 1fr; } .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -75px; } }
 
         .card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; }
-        .btn-main { background: var(--fb-blue); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
+        .btn-main { background: var(--fb-blue); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
 
+        /* Minimalist Music Player */
+        .music-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; border: 1px solid #eef0f2; }
+        .music-card h4 { margin: 0 0 10px; color: #1c1e21; font-size: 14px; }
+        audio { width: 100%; height: 35px; outline: none; }
+
+        .post { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; }
+        .del-btn { position: absolute; top: 10px; right: 10px; background: #f0f2f5; color: #65676b; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; }
         .post-media-grid { display: grid; gap: 4px; margin-top: 10px; border-radius: 8px; overflow: hidden; background: #eee; }
         .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr 1fr; }
-        .post-media-grid img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
-
-        .post { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; }
-        .del-btn { position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; z-index: 10; }
-        
-        .music-card { background: #1c1e21; color: white; padding: 15px; border-radius: 8px; text-align: center; }
-        #preview-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
+        .post-media-grid img { width: 100%; height: 220px; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -50,24 +49,31 @@
 <div class="content-container">
     <div class="sidebar">
         <div class="music-card">
-            <h4 style="margin:0">🎵 Now Playing</h4>
-            <iframe id="diary-player" width="100%" height="80" src="https://www.youtube.com/embed/8_T_E88vUv0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-            <p style="font-size: 11px; margin-top:5px; color:#aaa;">Ako Naman Muna - Angela Ken</p>
+            <h4>🎵 Ako Naman Muna</h4>
+            <audio controls loop id="bg-music">
+                <source src="https://files.catbox.moe/p9p39v.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <p style="font-size: 10px; color: #999; margin-top: 8px;">Angela Ken</p>
         </div>
 
         <div id="admin-panel" class="card" style="display:none; background: #e7f3ff; margin-top: 15px;">
-            <h3>Admin ⚙️</h3>
-            <input type="text" id="edit-name" placeholder="Pangalan" style="width:100%; margin-bottom:5px;">
-            <textarea id="edit-bio" placeholder="Bio" style="width:100%; margin-bottom:5px;"></textarea>
-            <button class="btn-main" onclick="window.updateProfile()">Save Profile</button>
+            <h3 style="margin-top:0">Settings ⚙️</h3>
+            <input type="text" id="edit-name" placeholder="Name" style="width:100%; padding:8px; margin-bottom:8px; border:1px solid #ddd; border-radius:4px;">
+            <textarea id="edit-bio" placeholder="Bio" style="width:100%; padding:8px; margin-bottom:8px; border:1px solid #ddd; border-radius:4px;"></textarea>
+            <label style="font-size:12px;">Profile Photo:</label>
+            <input type="file" id="new-pp" accept="image/*" style="margin-bottom:8px;">
+            <label style="font-size:12px;">Cover Photo:</label>
+            <input type="file" id="new-cover" accept="image/*">
+            <button class="btn-main" onclick="window.updateProfile()">Update Everything</button>
+            <p id="p-status" style="font-size:11px; color:blue;"></p>
         </div>
     </div>
 
     <div class="feed-col">
         <div id="create-post" class="card" style="display:none;">
-            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" style="width:100%; border:none; outline:none; font-size:16px;"></textarea>
-            <div id="preview-container"></div>
-            <input type="file" id="postImage" accept="image/*" multiple onchange="window.previewImages()" style="margin-top:10px;">
+            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" style="width:100%; border:none; outline:none; font-size:16px; resize:none;"></textarea>
+            <input type="file" id="postImage" accept="image/*" multiple style="margin-top:10px;">
             <button class="btn-main" id="uploadBtn">Post Memory</button>
             <p id="u-status" style="font-size:11px; color:blue"></p>
         </div>
@@ -95,14 +101,7 @@
     const db = getDatabase(app);
     window.isAdmin = false;
 
-    // --- DELETE FUNCTION FIX ---
-    window.deletePost = (id) => {
-        if(confirm("Sigurado ka bang buburahin ito?")) {
-            remove(ref(db, `posts/${id}`));
-        }
-    };
-
-    async function uploadImage(file) {
+    async function uploadToCloudinary(file) {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_preset", "ubjpoppn");
@@ -118,10 +117,11 @@
         document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/150";
         document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x250";
         window.currentPP = d.pic;
+        window.currentCP = d.cover;
     });
 
     window.askAdmin = () => {
-        if(prompt("Password:") === "qu3113n3") {
+        if(prompt("Admin Password:") === "qu3113n3") {
             window.isAdmin = true;
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('create-post').style.display = 'block';
@@ -129,15 +129,8 @@
         }
     };
 
-    window.previewImages = () => {
-        const container = document.getElementById('preview-container');
-        container.innerHTML = "";
-        const files = document.getElementById('postImage').files;
-        for(let f of files) {
-            const reader = new FileReader();
-            reader.onload = (e) => container.innerHTML += `<img src="${e.target.result}" class="preview-img">`;
-            reader.readAsDataURL(f);
-        }
+    window.deletePost = (id) => {
+        if(confirm("Burahin ito?")) remove(ref(db, `posts/${id}`));
     };
 
     function renderPosts() {
@@ -149,8 +142,7 @@
                 const p = data[id];
                 const imgs = p.images || [];
                 let gridClass = imgs.length === 1 ? 'grid-1' : 'grid-2';
-                let imgHtml = `<div class="post-media-grid ${gridClass}">` + 
-                    imgs.map(u => `<img src="${u}" onclick="window.open('${u}')">`).join('') + `</div>`;
+                let imgHtml = `<div class="post-media-grid ${gridClass}">` + imgs.map(u => `<img src="${u}" onclick="window.open('${u}')">`).join('') + `</div>`;
 
                 feed.innerHTML += `
                     <div class="post">
@@ -171,27 +163,35 @@
         const text = document.getElementById('postText').value;
         const files = document.getElementById('postImage').files;
         if(!text && files.length === 0) return;
-        
-        document.getElementById('u-status').innerText = "Uploading memory...";
+        document.getElementById('u-status').innerText = "Posting...";
         let urls = [];
-        for(let f of files) {
-            const url = await uploadImage(f);
-            if(url) urls.push(url);
-        }
-        
+        for(let f of files) urls.push(await uploadToCloudinary(f));
         push(ref(db, 'posts'), { text, images: urls, date: new Date().toLocaleString() }).then(() => {
             document.getElementById('postText').value = "";
             document.getElementById('postImage').value = "";
-            document.getElementById('preview-container').innerHTML = "";
             document.getElementById('u-status').innerText = "";
         });
     };
 
     window.updateProfile = async () => {
+        const status = document.getElementById('p-status');
+        status.innerText = "Saving changes...";
+        const ppFile = document.getElementById('new-pp').files[0];
+        const cpFile = document.getElementById('new-cover').files[0];
+        
+        let pUrl = window.currentPP;
+        let cUrl = window.currentCP;
+        if(ppFile) pUrl = await uploadToCloudinary(ppFile);
+        if(cpFile) cUrl = await uploadToCloudinary(cpFile);
+
         update(ref(db, 'profile'), {
             name: document.getElementById('edit-name').value || "Diary Owner",
-            bio: document.getElementById('edit-bio').value || ""
-        }).then(() => { alert("Profile Updated!"); });
+            bio: document.getElementById('edit-bio').value || "",
+            pic: pUrl, cover: cUrl
+        }).then(() => {
+            status.innerText = "Updated!";
+            setTimeout(() => status.innerText = "", 3000);
+        });
     };
 
     renderPosts();

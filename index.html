@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Personal Diary | FB Style Grid</title>
+    <title>Quellene wordl</title>
     <style>
         :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; --fb-red: #f02849; }
         body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
         
-        /* Header & Profile Section */
+        /* Header & Profile */
         .header-card { background: white; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding-bottom: 20px; }
         .cover-container { width: 100%; max-width: 940px; height: 350px; background: #ddd; margin: 0 auto; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; overflow: hidden; position: relative; }
         .cover-container img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; display: block; }
-        
         .profile-bar { max-width: 940px; margin: -30px auto 0; padding: 0 30px; display: flex; align-items: flex-end; gap: 20px; }
         #profile-pic { width: 168px; height: 168px; border-radius: 50%; border: 4px solid white; background: #eee; object-fit: cover; z-index: 1; cursor: pointer; display: block; }
-
         .name-box { margin-bottom: 15px; flex-grow: 1; }
         #author-name { font-size: 2rem; font-weight: bold; margin: 0; color: #1c1e21; }
-        #author-bio { color: var(--fb-gray); font-size: 1rem; margin: 5px 0; white-space: pre-wrap; }
 
         /* Layout */
         .content-container { max-width: 940px; margin: 20px auto; display: grid; grid-template-columns: 360px 1fr; gap: 16px; padding: 0 16px; box-sizing: border-box; }
@@ -27,37 +24,47 @@
             .content-container { grid-template-columns: 1fr; } 
             .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -84px; }
             .cover-container { height: 200px !important; }
-            #profile-pic { width: 140px !important; height: 140px !important; }
         }
 
         .card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; }
-        textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 10px; resize: none; font-family: inherit; box-sizing: border-box; }
-        .btn-main { background: var(--fb-blue); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-main { background: var(--fb-blue); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
 
-        /* Preview Grid */
-        #preview-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-bottom: 10px; }
-        .preview-item { width: 100%; height: 80px; border-radius: 6px; object-fit: cover; border: 1px solid #ddd; }
-
-        /* FB Grid System for Posts */
-        .post-media-grid { display: grid; gap: 4px; margin-top: 10px; width: calc(100% + 24px); margin-left: -12px; }
+        /* Multi-Image Grid */
+        .post-media-grid { display: grid; gap: 4px; margin-top: 10px; border-radius: 8px; overflow: hidden; background: #ddd; }
         .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr 1fr; }
         .grid-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 200px; }
-        .grid-3 img:first-child { grid-row: span 2; }
+        .grid-3 img:first-child { grid-row: span 2; height: 404px; }
         .grid-more { grid-template-columns: 1fr 1fr; }
+        .post-media-grid img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
+        .grid-1 img { height: auto; max-height: 500px; }
 
-        .post-media-grid img, .more-overlay { width: 100%; height: 250px; object-fit: cover; cursor: pointer; }
-        .more-overlay { position: relative; }
-        .more-count { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; pointer-events: none; }
-
-        .post { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; overflow: hidden; }
+        .post { background: white; padding: 12px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; }
         .post-info { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .post-info img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-        .del-btn { position: absolute; top: 10px; right: 10px; background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 5; }
+        .del-btn { position: absolute; top: 10px; right: 10px; background: #eee; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; }
 
-        .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: pointer; }
-        .lightbox img { max-width: 90%; max-height: 85%; border-radius: 8px; }
-        #lock-btn { position: fixed; bottom: 20px; right: 20px; background: white; border: 1px solid #ddd; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        /* Reactions */
+        .post-actions { display: flex; gap: 5px; padding: 4px 0; position: relative; border-top: 1px solid #eee; margin-top: 10px; }
+        .action-btn { flex: 1; background: none; border: none; padding: 8px; color: var(--fb-gray); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .reactions-box { display: none; position: absolute; top: -45px; left: 0; background: white; padding: 5px 10px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); gap: 10px; z-index: 10; }
+        .post-actions:hover .reactions-box { display: flex; }
+        .react { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+        .react:hover { transform: scale(1.3); }
+
+        /* Comments */
+        .comment-section { background: #f0f2f5; padding: 10px; border-radius: 8px; margin-top: 10px; }
+        .comment-bubble { background: white; padding: 8px 12px; border-radius: 18px; font-size: 13px; margin-bottom: 5px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); }
+
+        /* Music Player UI */
+        .music-card { background: #1c1e21; color: white; padding: 15px; border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .music-card iframe { border-radius: 8px; margin-top: 10px; }
+
+        #preview-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
+        
+        .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .lightbox img { max-width: 90%; max-height: 85%; }
     </style>
 </head>
 <body>
@@ -68,67 +75,49 @@
         <img id="profile-pic" src="" onclick="window.zoomImg(this.src)">
         <div class="name-box">
             <h1 id="author-name">Loading...</h1>
-            <p id="author-bio">...</p>
+            <p id="author-bio" style="color:var(--fb-gray)">...</p>
         </div>
     </div>
 </div>
 
 <div class="content-container">
     <div class="sidebar">
-        <div class="card">
-            <p style="font-style: italic; font-size: 0.85rem; color: var(--fb-gray);">
-                "The Digital Ink of My Soul <br>
-                A scroll, a tap, a moment caught in flight, <br>
-                A quiet thought shared in the glow of light. <br>
-                Not just a feed of photos or of names,<br>
-                But steady embers from my inner flames.<br>
-                Here, the seconds pause and find a home,<br>
-                Within these walls where only memories roam.<br>
-                From heavy days to sun-drenched, simple joys,<br>
-                A sanctuary built from digital noise.<br>
-                Click the lock, let the world disappear,<br>
-                The truth of who I am is written here.<br>
-                A heart in pixels, a life in every post<br>
-                The quiet updates that I value most."
-            </p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
-            <p>🌎 Digital diary</p>
-            <p>📅 Started @2026</p>
-            <p id="post-stat">Posts: 0</p>
+        <div class="music-card">
+            <h4 style="margin:0">🎵 Now Playing</h4>
+            <iframe width="100%" height="80" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" frameborder="0" allow="autoplay"></iframe>
+            <p style="font-size: 11px; margin-top:5px; color:#aaa;">Mood: Chill Beats</p>
         </div>
 
         <div id="admin-panel" class="card" style="display:none; background: #e7f3ff;">
             <h3>Admin Settings ⚙️</h3>
-            <input type="text" id="edit-name" placeholder="Pangalan">
-            <input type="text" id="edit-bio" placeholder="Bio">
-            <label style="font-size: 11px;">Profile Picture:</label>
-            <input type="file" id="new-pp" accept="image/*">
-            <label style="font-size: 11px;">Cover Photo:</label>
-            <input type="file" id="new-cover" accept="image/*">
-            <button class="btn-main" onclick="window.updateProfile()">Save Profile</button>
-            <p id="p-status" style="font-size: 11px; color: blue;"></p>
+            <input type="text" id="edit-name" placeholder="Pangalan" style="width:100%; margin-bottom:5px;">
+            <textarea id="edit-bio" placeholder="Bio" style="width:100%; margin-bottom:5px;"></textarea>
+            <label style="font-size:11px">Profile & Cover:</label>
+            <input type="file" id="new-pp">
+            <input type="file" id="new-cover">
+            <button class="btn-main" onclick="window.updateProfile()" style="margin-top:10px;">Update Profile</button>
+            <p id="p-status" style="font-size:11px"></p>
         </div>
     </div>
 
     <div class="feed-col">
         <div id="create-post" class="card" style="display:none;">
-            <h3>Ano ang nasa isip mo?</h3>
-            <textarea id="postText" rows="3" placeholder="Write something..."></textarea>
+            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?"></textarea>
             <div id="preview-container"></div>
-            <input type="file" id="postImage" accept="image/*" multiple onchange="window.previewImages()">
-            <button class="btn-main" id="uploadBtn">Share your memory</button>
-            <p id="u-status" style="font-size: 11px; color: blue;"></p>
+            <input type="file" id="postImage" accept="image/*" multiple onchange="window.previewImages()" style="margin: 10px 0;">
+            <button class="btn-main" id="uploadBtn">Post Memory</button>
+            <p id="u-status" style="font-size:11px; color:blue"></p>
         </div>
         <div id="feed"></div>
     </div>
 </div>
 
 <div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" src=""></div>
-<button id="lock-btn" onclick="window.askAdmin()">🔑</button>
+<button id="lock-btn" style="position:fixed; bottom:20px; right:20px; width:50px; height:50px; border-radius:50%; border:none; cursor:pointer; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2)" onclick="window.askAdmin()">🔑</button>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, remove, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDPhyTW9u9mlECayKF-H6LnbBgUc0UAmzo",
@@ -144,34 +133,24 @@
     const db = getDatabase(app);
     window.isAdmin = false;
 
-    window.zoomImg = (src) => { if(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display = 'flex'; } };
+    window.zoomImg = (src) => { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display='flex'; };
 
-    // IMAGE PREVIEW BEFORE UPLOAD
-    window.previewImages = () => {
-        const container = document.getElementById('preview-container');
-        container.innerHTML = "";
-        const files = document.getElementById('postImage').files;
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'preview-item';
-                container.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    };
+    async function uploadImage(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "ubjpoppn");
+        const res = await fetch("https://api.cloudinary.com/v1_1/dhnfxj9qx/image/upload", { method: "POST", body: formData });
+        const data = await res.json();
+        return data.secure_url;
+    }
 
     onValue(ref(db, 'profile'), (snap) => {
-        const d = snap.val();
-        if(d) {
-            document.getElementById('author-name').innerText = d.name || "Diary Owner";
-            document.getElementById('author-bio').innerText = d.bio || "Welcome to my journal";
-            document.getElementById('profile-pic').src = d.pic || "";
-            document.getElementById('cover-img').src = d.cover || "";
-            window.currentPP = d.pic;
-        }
+        const d = snap.val() || {};
+        document.getElementById('author-name').innerText = d.name || "My Diary";
+        document.getElementById('author-bio').innerText = d.bio || "";
+        document.getElementById('profile-pic').src = d.pic || "";
+        document.getElementById('cover-img').src = d.cover || "";
+        window.currentPP = d.pic;
     });
 
     window.askAdmin = () => {
@@ -180,103 +159,89 @@
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('create-post').style.display = 'block';
             renderPosts();
-            alert("Admin Mode: ON");
         }
     };
 
-    window.deletePost = (id) => { if(confirm("Sigurado kang buburahin ito?")) remove(ref(db, `posts/${id}`)); };
-
-    async function uploadImage(file) {
-        const formData = new FormData();
-        formData.append("image", file);
-        try {
-            const res = await fetch("https://api.imgbb.com/1/upload?key=46177d906013808e89e6233c72cfce6a", { method: "POST", body: formData });
-            const data = await res.json();
-            return data.data.url;
-        } catch { return null; }
-    }
-
-    window.updateProfile = async () => {
-        const status = document.getElementById('p-status');
-        status.innerText = "Updating profile...";
-        const ppFile = document.getElementById('new-pp').files[0];
-        const coverFile = document.getElementById('new-cover').files[0];
-        let pic = window.currentPP || "";
-        let cover = window.currentCover || "";
-        if(ppFile) pic = await uploadImage(ppFile);
-        if(coverFile) cover = await uploadImage(coverFile);
-
-        set(ref(db, 'profile'), {
-            name: document.getElementById('edit-name').value || document.getElementById('author-name').innerText,
-            bio: document.getElementById('edit-bio').value || document.getElementById('author-bio').innerText,
-            pic, cover
-        }).then(() => status.innerText = "Profile Updated!");
+    window.addReact = (postId, type) => {
+        const rRef = ref(db, `posts/${postId}/reactions/${type}`);
+        onValue(rRef, (snap) => {
+            set(rRef, (snap.val() || 0) + 1);
+        }, { onlyOnce: true });
     };
 
-    document.getElementById('uploadBtn').onclick = async () => {
-        const status = document.getElementById('u-status');
-        const text = document.getElementById('postText').value;
+    window.addComment = (postId) => {
+        const input = document.getElementById(`comment-${postId}`);
+        if(!input.value) return;
+        push(ref(db, `posts/${postId}/comments`), { text: input.value, date: new Date().toLocaleString() });
+        input.value = "";
+    };
+
+    window.previewImages = () => {
+        const container = document.getElementById('preview-container');
+        container.innerHTML = "";
         const files = document.getElementById('postImage').files;
-        if(!text && files.length === 0) return;
-
-        status.innerText = "Uploading memories...";
-        let urls = [];
-        for(let i = 0; i < files.length; i++) {
-            status.innerText = `Uploading ${i+1}/${files.length}...`;
-            const u = await uploadImage(files[i]);
-            if(u) urls.push(u);
+        for(let f of files) {
+            const reader = new FileReader();
+            reader.onload = (e) => container.innerHTML += `<img src="${e.target.result}" class="preview-img">`;
+            reader.readAsDataURL(f);
         }
-
-        push(ref(db, 'posts'), { text, images: urls, date: new Date().toLocaleString() }).then(() => {
-            document.getElementById('postText').value = "";
-            document.getElementById('postImage').value = "";
-            document.getElementById('preview-container').innerHTML = "";
-            status.innerText = "Shared successfully!";
-        });
     };
 
     function renderPosts() {
         onValue(ref(db, 'posts'), (snap) => {
             const feed = document.getElementById('feed');
             feed.innerHTML = "";
-            if(!snap.exists()) return;
-            const data = snap.val();
-            const ids = Object.keys(data).reverse();
-            document.getElementById('post-stat').innerText = `Posts: ${ids.length}`;
-
-            ids.forEach(id => {
+            const data = snap.val() || {};
+            Object.keys(data).reverse().forEach(id => {
                 const p = data[id];
-                const imgs = p.images || (p.image ? [p.image] : []);
-                let mediaHtml = "";
+                const imgs = p.images || [];
+                const r = p.reactions || {};
+                const totalR = Object.values(r).reduce((a, b) => a + b, 0);
+                const comms = p.comments ? Object.values(p.comments) : [];
 
-                if(imgs.length > 0) {
-                    const gridClass = imgs.length === 1 ? 'grid-1' : imgs.length === 2 ? 'grid-2' : imgs.length === 3 ? 'grid-3' : 'grid-more';
-                    mediaHtml = `<div class="post-media-grid ${gridClass}">`;
-                    imgs.forEach((u, i) => {
-                        if(i < 4) {
-                            if(i === 3 && imgs.length > 4) {
-                                mediaHtml += `<div class="more-overlay" onclick="window.zoomImg('${u}')"><img src="${u}"><div class="more-count">+${imgs.length-3}</div></div>`;
-                            } else {
-                                mediaHtml += `<img src="${u}" onclick="window.zoomImg('${u}')">`;
-                            }
-                        }
-                    });
-                    mediaHtml += `</div>`;
-                }
+                let gridClass = imgs.length === 1 ? 'grid-1' : imgs.length === 2 ? 'grid-2' : imgs.length === 3 ? 'grid-3' : 'grid-more';
+                let imgHtml = `<div class="post-media-grid ${gridClass}">` + imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')">`).join('') + `</div>`;
 
                 feed.innerHTML += `
                     <div class="post">
-                        <button class="del-btn" style="display: ${window.isAdmin ? 'flex' : 'none'}" onclick="window.deletePost('${id}')">✕</button>
-                        <div class="post-info">
-                            <img src="${window.currentPP || ''}">
-                            <div><b>${document.getElementById('author-name').innerText}</b><br><small style="color:gray;">${p.date}</small></div>
+                        <button class="del-btn" style="display:${window.isAdmin?'block':'none'}" onclick="remove(ref(db,'posts/${id}'))">✕</button>
+                        <div class="post-info"><img src="${window.currentPP}"><div><b>${document.getElementById('author-name').innerText}</b><br><small>${p.date}</small></div></div>
+                        <div style="white-space:pre-wrap; margin-bottom:10px">${p.text}</div>
+                        ${imgs.length > 0 ? imgHtml : ''}
+                        <div style="font-size:13px; color:gray; padding:8px 0">👍❤️ ${totalR} reactions • ${comms.length} comments</div>
+                        <div class="post-actions">
+                            <div class="reactions-box">
+                                <span class="react" onclick="window.addReact('${id}','like')">👍</span>
+                                <span class="react" onclick="window.addReact('${id}','love')">❤️</span>
+                                <span class="react" onclick="window.addReact('${id}','haha')">😂</span>
+                                <span class="react" onclick="window.addReact('${id}','sad')">😢</span>
+                            </div>
+                            <button class="action-btn">👍 Like</button>
+                            <button class="action-btn">💬 Comment</button>
                         </div>
-                        <div style="white-space:pre-wrap; font-size: 0.95rem;">${p.text}</div>
-                        ${mediaHtml}
+                        <div class="comment-section">
+                            ${comms.map(c => `<div class="comment-bubble"><b>Visitor</b>: ${c.text}</div>`).join('')}
+                            <input type="text" id="comment-${id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter') window.addComment('${id}')" style="width:100%; border-radius:20px; border:1px solid #ddd; padding:8px 15px; margin-top:5px; box-sizing:border-box;">
+                        </div>
                     </div>`;
             });
         });
     }
+
+    document.getElementById('uploadBtn').onclick = async () => {
+        const text = document.getElementById('postText').value;
+        const files = document.getElementById('postImage').files;
+        if(!text && files.length === 0) return;
+        document.getElementById('u-status').innerText = "Uploading memories...";
+        let urls = [];
+        for(let f of files) urls.push(await uploadImage(f));
+        push(ref(db, 'posts'), { text, images: urls, date: new Date().toLocaleString() }).then(() => {
+            document.getElementById('postText').value = "";
+            document.getElementById('postImage').value = "";
+            document.getElementById('preview-container').innerHTML = "";
+            document.getElementById('u-status').innerText = "";
+        });
+    };
     renderPosts();
 </script>
 </body>

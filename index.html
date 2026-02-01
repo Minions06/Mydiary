@@ -3,46 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quellene World
-    </title>
+    <title>My Personal Diary | Fixed</title>
     <style>
         :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; }
-        body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; overflow-x: hidden; }
+        body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
         
         .header-card { background: white; width: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding-bottom: 20px; }
-        .cover-container { width: 100%; max-width: 940px; height: 300px; background: #ddd; margin: 0 auto; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; overflow: hidden; position: relative; }
-        .cover-container img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+        .cover-container { width: 100%; max-width: 940px; height: 250px; background: #ddd; margin: 0 auto; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; overflow: hidden; }
+        .cover-container img { width: 100%; height: 100%; object-fit: cover; }
+        
         .profile-bar { max-width: 940px; margin: -50px auto 0; padding: 0 30px; display: flex; align-items: flex-end; gap: 20px; }
-        #profile-pic { width: 160px; height: 160px; border-radius: 50%; border: 4px solid white; background: #eee; object-fit: cover; z-index: 1; cursor: pointer; }
+        #profile-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid white; background: #eee; object-fit: cover; z-index: 1; }
         
         .content-container { max-width: 940px; margin: 20px auto; display: grid; grid-template-columns: 360px 1fr; gap: 16px; padding: 0 16px; box-sizing: border-box; }
-        @media (max-width: 850px) { .content-container { grid-template-columns: 1fr; } .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -80px; } }
+        @media (max-width: 850px) { .content-container { grid-template-columns: 1fr; } .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -75px; } }
 
         .card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; }
         .btn-main { background: var(--fb-blue); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
 
-        /* Fixed Image Grid */
         .post-media-grid { display: grid; gap: 4px; margin-top: 10px; border-radius: 8px; overflow: hidden; background: #eee; }
         .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr 1fr; }
-        .grid-3 { grid-template-columns: 1fr 1fr; }
-        .grid-3 img:first-child { grid-row: span 2; height: 100%; }
-        .post-media-grid img { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
+        .post-media-grid img { width: 100%; height: 200px; object-fit: cover; cursor: pointer; }
 
         .post { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; }
-        .music-card { background: #1c1e21; color: white; padding: 15px; border-radius: 8px; margin-bottom: 16px; text-align: center; }
+        .del-btn { position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; z-index: 10; }
         
+        .music-card { background: #1c1e21; color: white; padding: 15px; border-radius: 8px; text-align: center; }
         #preview-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; }
-        .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
     </style>
 </head>
 <body>
 
 <div class="header-card">
-    <div class="cover-container"><img id="cover-img" src="https://via.placeholder.com/940x350"></div>
+    <div class="cover-container"><img id="cover-img" src=""></div>
     <div class="profile-bar">
-        <img id="profile-pic" src="https://via.placeholder.com/160">
+        <img id="profile-pic" src="">
         <div class="name-box">
             <h1 id="author-name">Loading...</h1>
             <p id="author-bio" style="color:var(--fb-gray)">...</p>
@@ -54,24 +51,21 @@
     <div class="sidebar">
         <div class="music-card">
             <h4 style="margin:0">🎵 Now Playing</h4>
-            <iframe id="diary-player" width="100%" height="80" src="https://youtu.be/1vzg7-tsV40?list=RD1vzg7-tsV40" frameborder="0" allow="autoplay"></iframe>
+            <iframe id="diary-player" width="100%" height="80" src="https://www.youtube.com/embed/8_T_E88vUv0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
             <p style="font-size: 11px; margin-top:5px; color:#aaa;">Ako Naman Muna - Angela Ken</p>
         </div>
 
-        <div id="admin-panel" class="card" style="display:none; background: #e7f3ff;">
-            <h3>Admin Settings ⚙️</h3>
+        <div id="admin-panel" class="card" style="display:none; background: #e7f3ff; margin-top: 15px;">
+            <h3>Admin ⚙️</h3>
             <input type="text" id="edit-name" placeholder="Pangalan" style="width:100%; margin-bottom:5px;">
             <textarea id="edit-bio" placeholder="Bio" style="width:100%; margin-bottom:5px;"></textarea>
-            <input type="file" id="new-pp" accept="image/*">
-            <input type="file" id="new-cover" accept="image/*">
-            <button class="btn-main" onclick="window.updateProfile()" style="margin-top:10px;">Save Profile</button>
-            <p id="p-status" style="font-size:11px"></p>
+            <button class="btn-main" onclick="window.updateProfile()">Save Profile</button>
         </div>
     </div>
 
     <div class="feed-col">
         <div id="create-post" class="card" style="display:none;">
-            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" style="width:100%; border:none; outline:none; font-size:16px; resize:none;"></textarea>
+            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" style="width:100%; border:none; outline:none; font-size:16px;"></textarea>
             <div id="preview-container"></div>
             <input type="file" id="postImage" accept="image/*" multiple onchange="window.previewImages()" style="margin-top:10px;">
             <button class="btn-main" id="uploadBtn">Post Memory</button>
@@ -81,8 +75,7 @@
     </div>
 </div>
 
-<div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" style="max-width:90%"></div>
-<button id="lock-btn" style="position:fixed; bottom:20px; right:20px; width:50px; height:50px; border-radius:50%; border:none; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2)" onclick="window.askAdmin()">🔑</button>
+<button id="lock-btn" style="position:fixed; bottom:20px; right:20px; width:50px; height:50px; border-radius:50%; border:none; background:white; box-shadow:0 2px 10px rgba(0,0,0,0.2); cursor:pointer;" onclick="window.askAdmin()">🔑</button>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -102,29 +95,28 @@
     const db = getDatabase(app);
     window.isAdmin = false;
 
-    window.zoomImg = (src) => { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display='flex'; };
+    // --- DELETE FUNCTION FIX ---
+    window.deletePost = (id) => {
+        if(confirm("Sigurado ka bang buburahin ito?")) {
+            remove(ref(db, `posts/${id}`));
+        }
+    };
 
-    // Function to upload to Cloudinary
     async function uploadImage(file) {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("upload_preset", "ubjpoppn"); // Siguraduhin na 'unsigned' ang preset na ito
-        try {
-            const res = await fetch("https://api.cloudinary.com/v1_1/dhnfxj9qx/image/upload", { method: "POST", body: formData });
-            const data = await res.json();
-            return data.secure_url;
-        } catch (e) {
-            console.error("Upload failed", e);
-            return null;
-        }
+        formData.append("upload_preset", "ubjpoppn");
+        const res = await fetch("https://api.cloudinary.com/v1_1/dhnfxj9qx/image/upload", { method: "POST", body: formData });
+        const data = await res.json();
+        return data.secure_url;
     }
 
     onValue(ref(db, 'profile'), (snap) => {
         const d = snap.val() || {};
-        document.getElementById('author-name').innerText = d.name || "My Diary";
+        document.getElementById('author-name').innerText = d.name || "Diary Owner";
         document.getElementById('author-bio').innerText = d.bio || "";
-        document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/160";
-        document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x300";
+        document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/150";
+        document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x250";
         window.currentPP = d.pic;
     });
 
@@ -156,21 +148,20 @@
             Object.keys(data).reverse().forEach(id => {
                 const p = data[id];
                 const imgs = p.images || [];
-                let gridClass = imgs.length === 1 ? 'grid-1' : imgs.length === 2 ? 'grid-2' : 'grid-3';
+                let gridClass = imgs.length === 1 ? 'grid-1' : 'grid-2';
                 let imgHtml = `<div class="post-media-grid ${gridClass}">` + 
-                    imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')" onerror="this.src='https://via.placeholder.com/300?text=Image+Not+Found'">`).join('') + 
-                    `</div>`;
+                    imgs.map(u => `<img src="${u}" onclick="window.open('${u}')">`).join('') + `</div>`;
 
                 feed.innerHTML += `
                     <div class="post">
-                        <button style="position:absolute; right:10px; top:10px; display:${window.isAdmin?'block':'none'}" onclick="remove(ref(db,'posts/${id}'))">✕</button>
+                        ${window.isAdmin ? `<button class="del-btn" onclick="window.deletePost('${id}')">✕</button>` : ''}
                         <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px">
-                            <img src="${window.currentPP}" style="width:40px; height:40px; border-radius:50%">
+                            <img src="${window.currentPP}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
                             <b>${document.getElementById('author-name').innerText}</b>
                         </div>
                         <div style="white-space:pre-wrap">${p.text}</div>
                         ${imgs.length > 0 ? imgHtml : ''}
-                        <div style="font-size:12px; color:gray; margin-top:10px">${p.date}</div>
+                        <div style="font-size:11px; color:gray; margin-top:10px">${p.date}</div>
                     </div>`;
             });
         });
@@ -181,7 +172,7 @@
         const files = document.getElementById('postImage').files;
         if(!text && files.length === 0) return;
         
-        document.getElementById('u-status').innerText = "Uploading...";
+        document.getElementById('u-status').innerText = "Uploading memory...";
         let urls = [];
         for(let f of files) {
             const url = await uploadImage(f);
@@ -197,24 +188,13 @@
     };
 
     window.updateProfile = async () => {
-        const status = document.getElementById('p-status');
-        status.innerText = "Updating...";
-        const pp = document.getElementById('new-pp').files[0];
-        const cp = document.getElementById('new-cover').files[0];
-        let pUrl = window.currentPP;
-        let cUrl = document.getElementById('cover-img').src;
-        if(pp) pUrl = await uploadImage(pp);
-        if(cp) cUrl = await uploadImage(cp);
-        
         update(ref(db, 'profile'), {
-            name: document.getElementById('edit-name').value || "My Diary",
-            bio: document.getElementById('edit-bio').value || "",
-            pic: pUrl, cover: cUrl
-        }).then(() => { status.innerText = "Updated!"; });
+            name: document.getElementById('edit-name').value || "Diary Owner",
+            bio: document.getElementById('edit-bio').value || ""
+        }).then(() => { alert("Profile Updated!"); });
     };
 
     renderPosts();
 </script>
 </body>
 </html>
-

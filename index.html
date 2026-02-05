@@ -3,133 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Quellene World</title>
+    <title>My Diary | FB Style Timeline</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; }
         body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
-        .header-card { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .cover-container { width: 100%; max-width: 940px; height: 250px; margin: auto; overflow: hidden; border-radius: 8px 8px 0 0; cursor: pointer; }
+        
+        /* Header & Profile Section */
+        .header-card { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding-bottom: 20px; }
+        .cover-wrapper { max-width: 1095px; margin: 0 auto; position: relative; }
+        .cover-container { width: 100%; height: 350px; overflow: hidden; border-radius: 0 0 8px 8px; cursor: pointer; background: #ddd; }
         .cover-container img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-bar { max-width: 940px; margin: -75px auto 20px; display: flex; align-items: center; gap: 20px; padding: 0 15px; }
-        #profile-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .name-box h1 { font-size: 1.75rem; margin: 0; }
-        .name-box p { color: var(--fb-gray); margin: 0; }
 
-        .content-container { max-width: 1100px; margin: 0 auto 40px; display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 0 15px; }
-        @media (max-width: 850px) { .content-container { grid-template-columns: 1fr; } .profile-bar { flex-direction: column; text-align: center; } }
+        .profile-bar { max-width: 1000px; margin: -40px auto 0; display: flex; align-items: flex-end; gap: 20px; padding: 0 30px; position: relative; }
+        #profile-pic { width: 168px; height: 168px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); background: #fff; }
+        .name-box { margin-bottom: 15px; }
+        .name-box h1 { font-size: 2rem; font-weight: 700; margin: 0; }
+        .name-box p { color: var(--fb-gray); font-weight: 600; margin: 0; }
 
-        .card { border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
-        .btn-main { background: var(--fb-blue); color: #fff; font-weight: 600; border-radius: 8px; width: 100%; }
+        /* Layout */
+        .content-container { max-width: 1000px; margin: 20px auto; display: grid; grid-template-columns: 360px 1fr; gap: 16px; padding: 0 15px; }
+        @media (max-width: 850px) { 
+            .content-container { grid-template-columns: 1fr; } 
+            .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -80px; }
+            .cover-container { height: 200px; }
+        }
 
-        .music-card { text-align: center; padding: 20px; }
-        .music-card h4 { font-weight: 600; margin-bottom: 10px; }
-        .music-card p { font-size: 14px; line-height: 1.5; white-space: pre-line; color: #050505; margin-top: 10px; }
+        /* Sidebar Elements */
+        .card { border: none; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 16px; }
+        .intro-card { padding: 15px; }
+        .intro-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 15px; }
+        .intro-icon { font-size: 20px; width: 25px; text-align: center; }
+        
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; border-radius: 8px; overflow: hidden; margin-top: 10px; }
+        .photo-grid img { width: 100%; height: 100px; object-fit: cover; cursor: pointer; }
 
-        .post { padding: 20px; border-radius: 12px; margin-bottom: 20px; background: #fff; position: relative; }
-        .post:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .post-actions { display: flex; justify-content: space-around; padding-top: 10px; margin-top: 15px; border-top: 1px solid #eee; position: relative; }
-        .action-btn { flex: 1; background: none; border: none; color: var(--fb-gray); font-weight: 600; font-size: 14px; cursor: pointer; padding: 8px; border-radius: 8px; }
-        .action-btn:hover { background: #f0f2f5; }
-
-        .reactions-box { display: none; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background: #fff; padding: 5px 12px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); gap: 10px; z-index: 10; border: 1px solid #ddd; }
-        .post-actions:hover .reactions-box { display: flex; }
-
-        .react { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
-        .react:hover { transform: scale(1.4); }
-
-        .comment-section { background: #f0f2f5; padding: 12px; border-radius: 12px; margin-top: 12px; }
-        .comment-bubble { background: #fff; padding: 10px 15px; border-radius: 20px; font-size: 13px; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-
-        .post-media-grid { display: grid; gap: 6px; margin-top: 10px; border-radius: 12px; overflow: hidden; background: #eee; }
+        /* Feed & Posts */
+        .btn-main { background: var(--fb-blue); color: #fff; font-weight: 600; border-radius: 6px; border: none; padding: 8px; width: 100%; }
+        .post { padding: 15px; background: #fff; border-radius: 8px; margin-bottom: 16px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .post-media-grid { display: grid; gap: 4px; margin-top: 10px; border-radius: 8px; overflow: hidden; }
         .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr 1fr; }
-        .post-media-grid img { width: 100%; height: 220px; object-fit: cover; cursor: pointer; border-radius: 8px; }
+        .post-media-grid img { width: 100%; height: 250px; object-fit: cover; }
+
+        .reactions-box { display: none; position: absolute; top: -45px; left: 20px; background: #fff; padding: 5px 12px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); gap: 10px; z-index: 10; }
+        .post-actions:hover .reactions-box { display: flex; }
+        .action-btn { flex: 1; background: none; border: none; color: var(--fb-gray); font-weight: 600; padding: 8px; border-radius: 4px; }
+        .action-btn:hover { background: #f0f2f5; }
 
         .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-
-        .del-btn { position: absolute; top: 12px; right: 12px; background: #eee; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-weight: bold; }
-        #lock-btn { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; border-radius: 50%; border:none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); background: #fff; cursor: pointer; font-size: 22px; }
-
-        .sticky-top { position: sticky; top: 20px; }
+        #lock-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); cursor: pointer; }
+        .sticky-sidebar { position: sticky; top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="header-card mb-4">
-    <div class="cover-container" onclick="window.zoomImg(this.querySelector('img').src)">
-        <img id="cover-img" src="">
-    </div>
-    <div class="profile-bar">
-        <img id="profile-pic" src="" onclick="window.zoomImg(this.src)">
-        <div class="name-box">
-            <h1 id="author-name">Loading...</h1>
-            <p id="author-bio">...</p>
+    <div class="cover-wrapper">
+        <div class="cover-container" onclick="window.zoomImg(this.querySelector('img').src)">
+            <img id="cover-img" src="https://via.placeholder.com/1000x350">
+        </div>
+        <div class="profile-bar">
+            <img id="profile-pic" src="https://via.placeholder.com/150" onclick="window.zoomImg(this.src)">
+            <div class="name-box">
+                <h1 id="author-name">Loading...</h1>
+                <p id="author-bio">...</p>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="content-container">
-    <!-- Sidebar -->
-    <div class="sidebar sticky-top">
-        <div class="music-card card mb-3">
-            <h4>🎵 Ako Naman Muna</h4>
-            <audio controls loop class="w-100"><source src="https://files.catbox.moe/p9p39v.mp3" type="audio/mpeg"></audio>
-            <p>This is where my thoughts come to rest, 
-unfiltered, unpolished, and true.
-A quiet space for feelings I can’t say out loud,
-and moments I don’t want to lose.
-Here, I write to understand myself—
-the fears, the dreams, the in-between.
-Every word is a piece of my story,
-every page, a step toward healing.
-This diary is not for perfection,
-but for honesty and growth.
-If you’re reading this, know
-these words are my safe place.</p>
-        </div>
+    <div class="sidebar-col">
+        <div class="sticky-sidebar">
+            <div class="card intro-card">
+                <h4 style="font-weight: 800; font-size: 20px;">Intro</h4>
+                <div class="intro-item">🏠 Lives in <b id="intro-location">...</b></div>
+                <div class="intro-item">📍 From <b id="intro-from">...</b></div>
+                <div class="intro-item">🎂 Born on <b id="intro-bday">...</b></div>
+                <div class="intro-item">💖 <span id="intro-status">...</span></div>
+                <button class="btn-main" style="background: #E4E6EB; color: #050505;" onclick="window.askAdmin()">Edit Details</button>
+            </div>
 
-        <div id="admin-panel" class="card p-3 mb-3" style="display:none; background: #e7f3ff;">
-            <h5>Settings ⚙️</h5>
-            <input type="text" id="edit-name" placeholder="Name" class="form-control mb-2">
-            <textarea id="edit-bio" placeholder="Bio" class="form-control mb-2"></textarea>
-            <label style="font-size:12px;">Profile & Cover Photo:</label>
-            <input type="file" id="new-pp" accept="image/*" class="form-control mb-1">
-            <input type="file" id="new-cover" accept="image/*" class="form-control mb-2">
-            <button class="btn-main" onclick="window.updateProfile()">Update Profile</button>
-            <p id="p-status" style="font-size:12px; color:blue;"></p>
+            <div class="card p-3">
+                <h4 style="font-weight: 800; font-size: 20px;">Photos</h4>
+                <div id="sidebar-photo-grid" class="photo-grid"></div>
+            </div>
+
+            <div class="card p-3 text-center">
+                <audio controls loop class="w-100 mb-2"><source src="https://files.catbox.moe/p9p39v.mp3" type="audio/mpeg"></audio>
+                <small class="text-muted">Now Playing: Ako Naman Muna</small>
+            </div>
         </div>
     </div>
 
-    <!-- Feed -->
     <div class="feed-col">
-        <div class="sticky-top mb-3" style="z-index:10;">
-            <div id="create-post" class="card p-3 mb-3" style="display:none;">
-                <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" class="form-control mb-2" style="resize:none;"></textarea>
-                <input type="file" id="postImage" accept="image/*" multiple class="form-control mb-2">
-                <button class="btn-main" id="uploadBtn">Post Memory</button>
-                <p id="u-status" style="font-size:12px; color:blue"></p>
+        <div id="admin-panel" class="card p-3" style="display:none; background: #e7f3ff;">
+            <h5>Admin Settings ⚙️</h5>
+            <div class="row g-2">
+                <div class="col-6"><input type="text" id="edit-name" placeholder="Name" class="form-control mb-2"></div>
+                <div class="col-6"><input type="text" id="edit-location" placeholder="City" class="form-control mb-2"></div>
+                <div class="col-12"><textarea id="edit-bio" placeholder="Bio" class="form-control mb-2"></textarea></div>
+                <div class="col-4"><input type="text" id="edit-from" placeholder="From" class="form-control mb-2"></div>
+                <div class="col-4"><input type="text" id="edit-bday" placeholder="Bday" class="form-control mb-2"></div>
+                <div class="col-4"><input type="text" id="edit-status" placeholder="Status" class="form-control mb-2"></div>
             </div>
+            <label style="font-size:12px;">Update Photos:</label>
+            <input type="file" id="new-pp" class="form-control mb-1">
+            <input type="file" id="new-cover" class="form-control mb-2">
+            <button class="btn-main" onclick="window.updateProfile()">Save Changes</button>
+            <p id="p-status" class="mt-2" style="font-size:12px; color:blue;"></p>
         </div>
+
+        <div id="create-post" class="card p-3" style="display:none;">
+            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" class="form-control mb-2" style="border:none; background:#f0f2f5;"></textarea>
+            <input type="file" id="postImage" accept="image/*" multiple class="form-control mb-2">
+            <button class="btn-main" id="uploadBtn">Post Memory</button>
+            <p id="u-status" style="font-size:12px; color:blue"></p>
+        </div>
+
         <div id="feed"></div>
     </div>
 </div>
 
-<div id="lightbox" class="lightbox" onclick="this.style.display='none'">
-    <img id="lightbox-img" style="max-width:95%; max-height:85%;">
-</div>
-
-<button id="lock-btn">🔑</button>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" style="max-width:90%"></div>
+<button id="lock-btn" onclick="window.askAdmin()">🔑</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push, onValue, update, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, push, onValue, update, set, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDPhyTW9u9mlECayKF-H6LnbBgUc0UAmzo",
@@ -161,7 +165,11 @@ onValue(ref(db, 'profile'), (snap) => {
     document.getElementById('author-name').innerText = d.name || "Diary Owner";
     document.getElementById('author-bio').innerText = d.bio || "";
     document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/150";
-    document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x250";
+    document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/1000x350";
+    document.getElementById('intro-location').innerText = d.location || "N/A";
+    document.getElementById('intro-from').innerText = d.from || "N/A";
+    document.getElementById('intro-bday').innerText = d.bday || "N/A";
+    document.getElementById('intro-status').innerText = d.status || "N/A";
     window.currentPP = d.pic; window.currentCP = d.cover;
 });
 
@@ -174,61 +182,60 @@ window.askAdmin = () => {
     }
 };
 
-window.addReact = (postId, type) => {
-    const rRef = ref(db, `posts/${postId}/reactions/${type}`);
-    onValue(rRef, (snap) => { set(rRef, (snap.val() || 0) + 1); }, { onlyOnce: true });
-};
-
-window.addComment = (postId) => {
-    const input = document.getElementById(`comment-${postId}`);
-    if(!input.value) return;
-    push(ref(db, `posts/${postId}/comments`), { text: input.value, date: new Date().toLocaleString() });
-    input.value = "";
+window.updateProfile = async () => {
+    const status = document.getElementById('p-status');
+    status.innerText = "Saving...";
+    const pp = document.getElementById('new-pp').files[0];
+    const cp = document.getElementById('new-cover').files[0];
+    let pUrl = window.currentPP; let cUrl = window.currentCP;
+    if(pp) pUrl = await uploadToCloudinary(pp);
+    if(cp) cUrl = await uploadToCloudinary(cp);
+    
+    update(ref(db, 'profile'), {
+        name: document.getElementById('edit-name').value,
+        bio: document.getElementById('edit-bio').value,
+        location: document.getElementById('edit-location').value,
+        from: document.getElementById('edit-from').value,
+        bday: document.getElementById('edit-bday').value,
+        status: document.getElementById('edit-status').value,
+        pic: pUrl, cover: cUrl
+    }).then(() => { status.innerText = "Updated!"; });
 };
 
 function renderPosts() {
     onValue(ref(db, 'posts'), (snap) => {
         const feed = document.getElementById('feed');
-        feed.innerHTML = "";
+        const photoGrid = document.getElementById('sidebar-photo-grid');
+        feed.innerHTML = ""; photoGrid.innerHTML = "";
         const data = snap.val() || {};
+        let allImages = [];
+
         Object.keys(data).reverse().forEach(id => {
             const p = data[id];
             const imgs = p.images || [];
-            const r = p.reactions || {};
-            const totalR = Object.values(r).reduce((a, b) => a + b, 0);
-            const comms = p.comments ? Object.values(p.comments) : [];
+            imgs.forEach(url => allImages.push(url));
 
-            let imgHtml = `<div class="post-media-grid ${imgs.length==1?'grid-1':'grid-2'}">` + imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')">`).join('') + `</div>`;
+            let imgHtml = `<div class="post-media-grid ${imgs.length==1?'grid-1':'grid-2'}">` + 
+                imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')">`).join('') + `</div>`;
 
             feed.innerHTML += `
                 <div class="post">
-                    ${window.isAdmin ? `<button class="del-btn" onclick="if(confirm('Delete?')) remove(ref(db,'posts/${id}'))">✕</button>` : ''}
+                    ${window.isAdmin ? `<button class="btn btn-sm btn-light position-absolute top-0 end-0 m-2" onclick="remove(ref(db,'posts/${id}'))">✕</button>` : ''}
                     <div class="d-flex align-items-center mb-2">
                         <img src="${window.currentPP}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; margin-right:10px;">
                         <b>${document.getElementById('author-name').innerText}</b>
                     </div>
                     <div style="white-space:pre-wrap;">${p.text}</div>
                     ${imgs.length > 0 ? imgHtml : ''}
-                    <div class="text-muted mb-2" style="font-size:13px;">
-                        ${p.date} • 👍❤️ ${totalR} reactions • ${comms.length} comments
-                    </div>
-
-                    <div class="post-actions position-relative">
-                        <div class="reactions-box">
-                            <span class="react" onclick="window.addReact('${id}','like')">👍</span>
-                            <span class="react" onclick="window.addReact('${id}','love')">❤️</span>
-                            <span class="react" onclick="window.addReact('${id}','haha')">😂</span>
-                            <span class="react" onclick="window.addReact('${id}','sad')">😢</span>
-                        </div>
-                        <button class="action-btn">👍 React</button>
-                        <button class="action-btn" onclick="document.getElementById('comment-${id}').focus()">💬 Comment</button>
-                    </div>
-
-                    <div class="comment-section">
-                        ${comms.map(c => `<div class="comment-bubble"><b>Visitor</b>: ${c.text}</div>`).join('')}
-                        <input type="text" id="comment-${id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter') window.addComment('${id}')" class="form-control mt-2">
+                    <div class="mt-2 text-muted small">${p.date}</div>
+                    <div class="post-actions d-flex mt-3 border-top pt-2">
+                        <button class="action-btn">👍 Like</button>
+                        <button class="action-btn">💬 Comment</button>
                     </div>
                 </div>`;
+        });
+        allImages.slice(0, 9).forEach(url => {
+            photoGrid.innerHTML += `<img src="${url}" onclick="window.zoomImg('${url}')">`;
         });
     });
 }
@@ -241,22 +248,7 @@ document.getElementById('uploadBtn').onclick = async () => {
     let urls = [];
     for(let f of files) urls.push(await uploadToCloudinary(f));
     push(ref(db, 'posts'), { text, images: urls, date: new Date().toLocaleString() }).then(() => {
-        document.getElementById('postText').value = ""; 
-        document.getElementById('postImage').value = "";
-        document.getElementById('u-status').innerText = "";
-    });
-};
-
-window.updateProfile = async () => {
-    const status = document.getElementById('p-status');
-    status.innerText = "Saving...";
-    const pp = document.getElementById('new-pp').files[0];
-    const cp = document.getElementById('new-cover').files[0];
-    let pUrl = window.currentPP; let cUrl = window.currentCP;
-    if(pp) pUrl = await uploadToCloudinary(pp);
-    if(cp) cUrl = await uploadToCloudinary(cp);
-    update(ref(db, 'profile'), { name: document.getElementById('edit-name').value, bio: document.getElementById('edit-bio').value, pic: pUrl, cover: cUrl }).then(() => {
-        status.innerText = "Updated!";
+        document.getElementById('postText').value = ""; document.getElementById('u-status').innerText = "";
     });
 };
 

@@ -3,228 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUELLENE WORLD</title>
+    <title> Quellene World</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         :root { --fb-blue: #1877F2; --fb-bg: #F0F2F5; --fb-gray: #65676B; }
-        body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; overflow-x: hidden; }
+        body { font-family: Segoe UI, Helvetica, Arial, sans-serif; background-color: var(--fb-bg); margin: 0; padding: 0; }
+        .header-card { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .cover-container { width: 100%; max-width: 940px; height: 250px; margin: auto; overflow: hidden; border-radius: 8px 8px 0 0; cursor: pointer; }
+        .cover-container img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-bar { max-width: 940px; margin: -75px auto 20px; display: flex; align-items: center; gap: 20px; padding: 0 15px; }
+        #profile-pic { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .name-box h1 { font-size: 1.75rem; margin: 0; }
+        .name-box p { color: var(--fb-gray); margin: 0; }
 
-        /* Header */
-        .header-card {
-            background: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
+        .content-container { max-width: 1100px; margin: 0 auto 40px; display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 0 15px; }
+        @media (max-width: 850px) { .content-container { grid-template-columns: 1fr; } .profile-bar { flex-direction: column; text-align: center; } }
 
-        .cover-container {
-            width: 100%;
-            max-width: 940px;
-            height: 250px;
-            margin: 0 auto;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-        }
+        .card { border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+        .btn-main { background: var(--fb-blue); color: #fff; font-weight: 600; border-radius: 8px; width: 100%; }
 
-        .cover-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .music-card { text-align: center; padding: 20px; }
+        .music-card h4 { font-weight: 600; margin-bottom: 10px; }
+        .music-card p { font-size: 14px; line-height: 1.5; white-space: pre-line; color: #050505; margin-top: 10px; }
 
-        .profile-bar {
-            max-width: 940px;
-            margin: -75px auto 0;
-            padding: 0 30px;
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
-        }
-
-        #profile-pic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            background: #eee;
-            object-fit: cover;
-            z-index: 1;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        .content-container {
-            max-width: 1100px;
-            margin: 0 auto 40px;
-            display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 16px;
-            padding: 0 16px;
-            box-sizing: border-box;
-        }
-
-        @media (max-width: 850px) {
-            .content-container { grid-template-columns: 1fr; }
-            .profile-bar { flex-direction: column; align-items: center; text-align: center; margin-top: -100px; }
-        }
-
-        /* Cards */
-        .card, .music-card {
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            background: #ffffff;
-        }
-
-        .btn-main {
-            background: var(--fb-blue);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        /* Music Player */
-        .music-card {
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .music-card p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #050505;
-            white-space: pre-line;
-        }
-
-        audio { width: 100%; height: 35px; }
-
-        /* Posts & Reactions */
-        .post {
-            background: #ffffff;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-            margin-bottom: 16px;
-            position: relative;
-        }
-
-        .post:hover {
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 5px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-            margin-top: 10px;
-            position: relative;
-        }
-
-        .action-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 8px;
-            color: var(--fb-gray);
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 6px;
-        }
-
+        .post { padding: 20px; border-radius: 12px; margin-bottom: 20px; background: #fff; position: relative; }
+        .post:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .post-actions { display: flex; justify-content: space-around; padding-top: 10px; margin-top: 15px; border-top: 1px solid #eee; position: relative; }
+        .action-btn { flex: 1; background: none; border: none; color: var(--fb-gray); font-weight: 600; font-size: 14px; cursor: pointer; padding: 8px; border-radius: 8px; }
         .action-btn:hover { background: #f0f2f5; }
 
-        .reactions-box {
-            display: none;
-            position: absolute;
-            top: -45px;
-            left: 0;
-            background: white;
-            padding: 5px 10px;
-            border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            gap: 10px;
-            z-index: 10;
-            border: 1px solid #ddd;
-        }
-
+        .reactions-box { display: none; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); background: #fff; padding: 5px 12px; border-radius: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); gap: 10px; z-index: 10; border: 1px solid #ddd; }
         .post-actions:hover .reactions-box { display: flex; }
 
-        .react {
-            font-size: 20px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        .react { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+        .react:hover { transform: scale(1.4); }
 
-        .react:hover { transform: scale(1.3); }
+        .comment-section { background: #f0f2f5; padding: 12px; border-radius: 12px; margin-top: 12px; }
+        .comment-bubble { background: #fff; padding: 10px 15px; border-radius: 20px; font-size: 13px; margin-bottom: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 
-        /* Comments */
-        .comment-section { background: #f0f2f5; padding: 10px; border-radius: 8px; margin-top: 10px; }
-        .comment-bubble {
-            background: #ffffff;
-            padding: 8px 12px;
-            border-radius: 18px;
-            font-size: 13px;
-            margin-bottom: 5px;
-            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-        }
-
-        /* Media Grid */
-        .post-media-grid { display: grid; gap: 4px; margin-top: 10px; border-radius: 8px; overflow: hidden; background: #eee; }
+        .post-media-grid { display: grid; gap: 6px; margin-top: 10px; border-radius: 12px; overflow: hidden; background: #eee; }
         .grid-1 { grid-template-columns: 1fr; }
         .grid-2 { grid-template-columns: 1fr 1fr; }
-        .post-media-grid img { width: 100%; height: 220px; object-fit: cover; cursor: pointer; border-radius: 6px; }
+        .post-media-grid img { width: 100%; height: 220px; object-fit: cover; cursor: pointer; border-radius: 8px; }
 
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            align-items: center;
-            justify-content: center;
-        }
+        .lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
 
-        /* Delete button */
-        .del-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #eee;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-        }
+        .del-btn { position: absolute; top: 12px; right: 12px; background: #eee; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-weight: bold; }
+        #lock-btn { position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px; border-radius: 50%; border:none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); background: #fff; cursor: pointer; font-size: 22px; }
 
-        /* Floating Admin Button */
-        #lock-btn {
-            background: #ffffff;
-            border: 1px solid #ddd;
-        }
-
+        .sticky-top { position: sticky; top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="header-card">
+<div class="header-card mb-4">
     <div class="cover-container" onclick="window.zoomImg(this.querySelector('img').src)">
         <img id="cover-img" src="">
     </div>
@@ -232,16 +67,17 @@
         <img id="profile-pic" src="" onclick="window.zoomImg(this.src)">
         <div class="name-box">
             <h1 id="author-name">Loading...</h1>
-            <p id="author-bio" style="color:var(--fb-gray)">...</p>
+            <p id="author-bio">...</p>
         </div>
     </div>
 </div>
 
 <div class="content-container">
-    <div class="sidebar">
-        <div class="music-card">
+    <!-- Sidebar -->
+    <div class="sidebar sticky-top">
+        <div class="music-card card mb-3">
             <h4>🎵 Ako Naman Muna</h4>
-            <audio controls loop><source src="https://files.catbox.moe/p9p39v.mp3" type="audio/mpeg"></audio>
+            <audio controls loop class="w-100"><source src="https://files.catbox.moe/p9p39v.mp3" type="audio/mpeg"></audio>
             <p>This is where my thoughts come to rest, 
 unfiltered, unpolished, and true.
 A quiet space for feelings I can’t say out loud,
@@ -253,28 +89,30 @@ every page, a step toward healing.
 This diary is not for perfection,
 but for honesty and growth.
 If you’re reading this, know
-these words are my safe place.
-            </p>
+these words are my safe place.</p>
         </div>
 
-        <div id="admin-panel" class="card" style="display:none; background: #e7f3ff;">
-            <h3>Settings ⚙️</h3>
+        <div id="admin-panel" class="card p-3 mb-3" style="display:none; background: #e7f3ff;">
+            <h5>Settings ⚙️</h5>
             <input type="text" id="edit-name" placeholder="Name" class="form-control mb-2">
             <textarea id="edit-bio" placeholder="Bio" class="form-control mb-2"></textarea>
-            <label style="font-size:11px">Profile & Cover Photo:</label>
+            <label style="font-size:12px;">Profile & Cover Photo:</label>
             <input type="file" id="new-pp" accept="image/*" class="form-control mb-1">
             <input type="file" id="new-cover" accept="image/*" class="form-control mb-2">
             <button class="btn-main" onclick="window.updateProfile()">Update Profile</button>
-            <p id="p-status" style="font-size:11px; color:blue;"></p>
+            <p id="p-status" style="font-size:12px; color:blue;"></p>
         </div>
     </div>
 
+    <!-- Feed -->
     <div class="feed-col">
-        <div id="create-post" class="card" style="display:none;">
-            <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" class="form-control mb-2" style="resize:none;"></textarea>
-            <input type="file" id="postImage" accept="image/*" multiple class="form-control mb-2">
-            <button class="btn-main" id="uploadBtn">Post Memory</button>
-            <p id="u-status" style="font-size:11px; color:blue"></p>
+        <div class="sticky-top mb-3" style="z-index:10;">
+            <div id="create-post" class="card p-3 mb-3" style="display:none;">
+                <textarea id="postText" rows="3" placeholder="Ano ang nasa isip mo?" class="form-control mb-2" style="resize:none;"></textarea>
+                <input type="file" id="postImage" accept="image/*" multiple class="form-control mb-2">
+                <button class="btn-main" id="uploadBtn">Post Memory</button>
+                <p id="u-status" style="font-size:12px; color:blue"></p>
+            </div>
         </div>
         <div id="feed"></div>
     </div>
@@ -284,143 +122,145 @@ these words are my safe place.
     <img id="lightbox-img" style="max-width:95%; max-height:85%;">
 </div>
 
-<button id="lock-btn" class="btn btn-light rounded-circle shadow" onclick="window.askAdmin()">🔑</button>
+<button id="lock-btn">🔑</button>
 
-<!-- Firebase + Script -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, update, remove, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDPhyTW9u9mlECayKF-H6LnbBgUc0UAmzo",
-        authDomain: "my-diary-65819.firebaseapp.com",
-        databaseURL: "https://my-diary-65819-default-rtdb.firebaseio.com",
-        projectId: "my-diary-65819",
-        storageBucket: "my-diary-65819.firebasestorage.app",
-        messagingSenderId: "596106682074",
-        appId: "1:596106682074:web:494301ef7ca26bea3ccfe3"
-    };
+const firebaseConfig = {
+    apiKey: "AIzaSyDPhyTW9u9mlECayKF-H6LnbBgUc0UAmzo",
+    authDomain: "my-diary-65819.firebaseapp.com",
+    databaseURL: "https://my-diary-65819-default-rtdb.firebaseio.com",
+    projectId: "my-diary-65819",
+    storageBucket: "my-diary-65819.firebasestorage.app",
+    messagingSenderId: "596106682074",
+    appId: "1:596106682074:web:494301ef7ca26bea3ccfe3"
+};
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    window.isAdmin = false;
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+window.isAdmin = false;
 
-    window.zoomImg = (src) => { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display='flex'; };
+window.zoomImg = (src) => { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display='flex'; };
 
-    async function uploadToCloudinary(file) {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "ubjpoppn");
-        const res = await fetch("https://api.cloudinary.com/v1_1/dhnfxj9qx/image/upload", { method: "POST", body: formData });
-        const data = await res.json();
-        return data.secure_url;
+async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ubjpoppn");
+    const res = await fetch("https://api.cloudinary.com/v1_1/dhnfxj9qx/image/upload", { method: "POST", body: formData });
+    const data = await res.json();
+    return data.secure_url;
+}
+
+onValue(ref(db, 'profile'), (snap) => {
+    const d = snap.val() || {};
+    document.getElementById('author-name').innerText = d.name || "Diary Owner";
+    document.getElementById('author-bio').innerText = d.bio || "";
+    document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/150";
+    document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x250";
+    window.currentPP = d.pic; window.currentCP = d.cover;
+});
+
+window.askAdmin = () => {
+    if(prompt("Admin Password:") === "qu3113n3") {
+        window.isAdmin = true;
+        document.getElementById('admin-panel').style.display = 'block';
+        document.getElementById('create-post').style.display = 'block';
+        renderPosts();
     }
+};
 
-    onValue(ref(db, 'profile'), (snap) => {
-        const d = snap.val() || {};
-        document.getElementById('author-name').innerText = d.name || "Diary Owner";
-        document.getElementById('author-bio').innerText = d.bio || "";
-        document.getElementById('profile-pic').src = d.pic || "https://via.placeholder.com/150";
-        document.getElementById('cover-img').src = d.cover || "https://via.placeholder.com/940x250";
-        window.currentPP = d.pic; window.currentCP = d.cover;
+window.addReact = (postId, type) => {
+    const rRef = ref(db, `posts/${postId}/reactions/${type}`);
+    onValue(rRef, (snap) => { set(rRef, (snap.val() || 0) + 1); }, { onlyOnce: true });
+};
+
+window.addComment = (postId) => {
+    const input = document.getElementById(`comment-${postId}`);
+    if(!input.value) return;
+    push(ref(db, `posts/${postId}/comments`), { text: input.value, date: new Date().toLocaleString() });
+    input.value = "";
+};
+
+function renderPosts() {
+    onValue(ref(db, 'posts'), (snap) => {
+        const feed = document.getElementById('feed');
+        feed.innerHTML = "";
+        const data = snap.val() || {};
+        Object.keys(data).reverse().forEach(id => {
+            const p = data[id];
+            const imgs = p.images || [];
+            const r = p.reactions || {};
+            const totalR = Object.values(r).reduce((a, b) => a + b, 0);
+            const comms = p.comments ? Object.values(p.comments) : [];
+
+            let imgHtml = `<div class="post-media-grid ${imgs.length==1?'grid-1':'grid-2'}">` + imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')">`).join('') + `</div>`;
+
+            feed.innerHTML += `
+                <div class="post">
+                    ${window.isAdmin ? `<button class="del-btn" onclick="if(confirm('Delete?')) remove(ref(db,'posts/${id}'))">✕</button>` : ''}
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="${window.currentPP}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; margin-right:10px;">
+                        <b>${document.getElementById('author-name').innerText}</b>
+                    </div>
+                    <div style="white-space:pre-wrap;">${p.text}</div>
+                    ${imgs.length > 0 ? imgHtml : ''}
+                    <div class="text-muted mb-2" style="font-size:13px;">
+                        ${p.date} • 👍❤️ ${totalR} reactions • ${comms.length} comments
+                    </div>
+
+                    <div class="post-actions position-relative">
+                        <div class="reactions-box">
+                            <span class="react" onclick="window.addReact('${id}','like')">👍</span>
+                            <span class="react" onclick="window.addReact('${id}','love')">❤️</span>
+                            <span class="react" onclick="window.addReact('${id}','haha')">😂</span>
+                            <span class="react" onclick="window.addReact('${id}','sad')">😢</span>
+                        </div>
+                        <button class="action-btn">👍 React</button>
+                        <button class="action-btn" onclick="document.getElementById('comment-${id}').focus()">💬 Comment</button>
+                    </div>
+
+                    <div class="comment-section">
+                        ${comms.map(c => `<div class="comment-bubble"><b>Visitor</b>: ${c.text}</div>`).join('')}
+                        <input type="text" id="comment-${id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter') window.addComment('${id}')" class="form-control mt-2">
+                    </div>
+                </div>`;
+        });
     });
+}
 
-    window.askAdmin = () => {
-        if(prompt("Admin Password:") === "qu3113n3") {
-            window.isAdmin = true;
-            document.getElementById('admin-panel').style.display = 'block';
-            document.getElementById('create-post').style.display = 'block';
-            renderPosts();
-        }
-    };
+document.getElementById('uploadBtn').onclick = async () => {
+    const text = document.getElementById('postText').value;
+    const files = document.getElementById('postImage').files;
+    if(!text && files.length === 0) return;
+    document.getElementById('u-status').innerText = "Posting...";
+    let urls = [];
+    for(let f of files) urls.push(await uploadToCloudinary(f));
+    push(ref(db, 'posts'), { text, images: urls, date: new Date().toLocaleString() }).then(() => {
+        document.getElementById('postText').value = ""; 
+        document.getElementById('postImage').value = "";
+        document.getElementById('u-status').innerText = "";
+    });
+};
 
-    window.addReact = (postId, type) => {
-        const rRef = ref(db, `posts/${postId}/reactions/${type}`);
-        onValue(rRef, (snap) => { update(rRef, (snap.val() || 0) + 1); }, { onlyOnce: true });
-    };
+window.updateProfile = async () => {
+    const status = document.getElementById('p-status');
+    status.innerText = "Saving...";
+    const pp = document.getElementById('new-pp').files[0];
+    const cp = document.getElementById('new-cover').files[0];
+    let pUrl = window.currentPP; let cUrl = window.currentCP;
+    if(pp) pUrl = await uploadToCloudinary(pp);
+    if(cp) cUrl = await uploadToCloudinary(cp);
+    update(ref(db, 'profile'), { name: document.getElementById('edit-name').value, bio: document.getElementById('edit-bio').value, pic: pUrl, cover: cUrl }).then(() => {
+        status.innerText = "Updated!";
+    });
+};
 
-    window.addComment = (postId) => {
-        const input = document.getElementById(`comment-${postId}`);
-        if(!input.value) return;
-        push(ref(db, `posts/${postId}/comments`), { text: input.value, date: new Date().toLocaleString() });
-        input.value = "";
-    };
-
-    function renderPosts() {
-        onValue(ref(db, 'posts'), (snap) => {
-            const feed = document.getElementById('feed');
-            feed.innerHTML = "";
-            const data = snap.val() || {};
-            Object.keys(data).reverse().forEach(id => {
-                const p = data[id];
-                const imgs = p.images || [];
-                const r = p.reactions || {};
-                const totalR = Object.values(r).reduce((a,b)=>a+b,0);
-                const comms = p.comments ? Object.values(p.comments) : [];
-
-                let imgHtml = `<div class="post-media-grid ${imgs.length==1?'grid-1':'grid-2'}">` + imgs.map(u => `<img src="${u}" onclick="window.zoomImg('${u}')">`).join('') + `</div>`;
-
-                feed.innerHTML += `
-                    <div class="post">
-                        ${window.isAdmin ? `<button class="del-btn" onclick="if(confirm('Delete?')) remove(ref(db,'posts/${id}'))">✕</button>` : ''}
-                        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px">
-                            <img src="${window.currentPP}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-                            <b>${document.getElementById('author-name').innerText}</b>
-                        </div>
-                        <div style="white-space:pre-wrap">${p.text}</div>
-                        ${imgs.length>0?imgHtml:''}
-                        <div style="font-size:12px; color:gray; padding:10px 0;">👍❤️ ${totalR} reactions • ${comms.length} comments</div>
-
-                        <div class="post-actions">
-                            <div class="reactions-box">
-                                <span class="react" onclick="window.addReact('${id}','like')">👍</span>
-                                <span class="react" onclick="window.addReact('${id}','love')">❤️</span>
-                                <span class="react" onclick="window.addReact('${id}','haha')">😂</span>
-                                <span class="react" onclick="window.addReact('${id}','sad')">😢</span>
-                            </div>
-                            <button class="action-btn">👍 React</button>
-                            <button class="action-btn" onclick="document.getElementById('comment-${id}').focus()">💬 Comment</button>
-                        </div>
-
-                        <div class="comment-section">
-                            ${comms.map(c => `<div class="comment-bubble"><b>Visitor</b>: ${c.text}</div>`).join('')}
-                            <input type="text" id="comment-${id}" placeholder="Write a comment..." onkeypress="if(event.key==='Enter') window.addComment('${id}')" class="form-control mt-2">
-                        </div>
-                    </div>`;
-            });
-        });
-    }
-
-    document.getElementById('uploadBtn').onclick = async () => {
-        const text = document.getElementById('postText').value;
-        const files = document.getElementById('postImage').files;
-        if(!text && files.length===0) return;
-        document.getElementById('u-status').innerText = "Posting...";
-        let urls = [];
-        for(let f of files) urls.push(await uploadToCloudinary(f));
-        push(ref(db,'posts'),{ text, images: urls, date: new Date().toLocaleString() }).then(()=>{
-            document.getElementById('postText').value="";
-            document.getElementById('postImage').value="";
-            document.getElementById('u-status').innerText="";
-        });
-    };
-
-    window.updateProfile = async () => {
-        const status = document.getElementById('p-status');
-        status.innerText = "Saving...";
-        const pp = document.getElementById('new-pp').files[0];
-        const cp = document.getElementById('new-cover').files[0];
-        let pUrl = window.currentPP;
-        let cUrl = window.currentCP;
-        if(pp) pUrl = await uploadToCloudinary(pp);
-        if(cp) cUrl = await uploadToCloudinary(cp);
-        update(ref(db,'profile'), { name: document.getElementById('edit-name').value, bio: document.getElementById('edit-bio').value, pic: pUrl, cover: cUrl }).then(()=>{
-            status.innerText = "Updated!";
-        });
-    };
-
-    renderPosts();
+renderPosts();
 </script>
-
 </body>
 </html>

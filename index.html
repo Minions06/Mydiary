@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Timeline Diary | aesthetic & private</title>
+    <title>Quellene World</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -76,8 +76,9 @@
         .photo-more-overlay { position: relative; height: 100%; width: 100%; }
         .more-count { 
             position: absolute; top:0; left:0; width:100%; height:100%; 
-            background: rgba(0,0,0,0.5); color: #fff; font-size: 2rem; 
+            background: rgba(0,0,0,0.6); color: #fff; font-size: 2rem; 
             font-weight: 700; display: flex; align-items: center; justify-content: center;
+            z-index: 5;
         }
 
         /* --- SIDEBAR PHOTO GRID --- */
@@ -105,8 +106,15 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; max-width: 1000px; margin: 0 auto; }
         .gallery-grid img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; cursor: pointer; }
 
-        /* --- UTILS --- */
-        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; }
+        /* --- LIGHTBOX SLIDER --- */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; }
+        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: white; border: none; padding: 15px 20px; font-size: 24px; cursor: pointer; border-radius: 50%; z-index: 10001; }
+        .lb-nav:hover { background: rgba(255,255,255,0.3); }
+        .lb-prev { left: 20px; }
+        .lb-next { right: 20px; }
+        #lb-counter { position: absolute; bottom: 20px; color: white; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+        .close-lb { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 35px; z-index: 10002; }
+
         #lock-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; border: none; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; font-size: 24px; z-index: 1000; }
         .post { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
     </style>
@@ -180,14 +188,21 @@
 </div>
 
 <div id="gallery-overlay">
-    <div class="max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px;">
+    <div style="max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px;">
         <h2 class="fw-bold">All Photos</h2>
         <button class="btn btn-dark rounded-circle" onclick="window.closeGallery()">✕</button>
     </div>
     <div id="full-gallery-grid" class="gallery-grid"></div>
 </div>
 
-<div id="lightbox" class="lightbox" onclick="this.style.display='none'"><img id="lightbox-img" style="max-width:90%; border-radius:10px;"></div>
+<div id="lightbox" class="lightbox">
+    <button class="lb-nav lb-prev" id="lb-prev">❮</button>
+    <img id="lightbox-img" style="max-width:90%; max-height:85vh; border-radius:10px; cursor: pointer;">
+    <button class="lb-nav lb-next" id="lb-next">❯</button>
+    <div id="lb-counter"></div>
+    <button class="close-lb" onclick="document.getElementById('lightbox').style.display='none'">✕</button>
+</div>
+
 <button id="lock-btn" onclick="window.askAdmin()">🔑</button>
 
 <script type="module">
@@ -206,8 +221,47 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 window.isAdmin = false;
 let globalImages = [];
+let currentAlbum = [];
+let currentIndex = 0;
 
-window.zoomImg = (src) => { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display='flex'; };
+// --- SLIDER FUNCTIONS ---
+window.zoomImg = (src) => { 
+    currentAlbum = [src]; currentIndex = 0; updateSlider(); 
+    document.getElementById('lightbox').style.display='flex'; 
+};
+
+window.openSlider = (album, index) => {
+    currentAlbum = album;
+    currentIndex = index;
+    updateSlider();
+    document.getElementById('lightbox').style.display = 'flex';
+};
+
+function updateSlider() {
+    const img = document.getElementById('lightbox-img');
+    const counter = document.getElementById('lb-counter');
+    img.src = currentAlbum[currentIndex];
+    counter.innerText = `${currentIndex + 1} / ${currentAlbum.length}`;
+    document.getElementById('lb-prev').style.display = currentAlbum.length > 1 ? 'block' : 'none';
+    document.getElementById('lb-next').style.display = currentAlbum.length > 1 ? 'block' : 'none';
+}
+
+document.getElementById('lb-prev').onclick = (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + currentAlbum.length) % currentAlbum.length;
+    updateSlider();
+};
+
+document.getElementById('lb-next').onclick = (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % currentAlbum.length;
+    updateSlider();
+};
+
+document.getElementById('lightbox').onclick = function(e) {
+    if(e.target === this) this.style.display = 'none';
+};
+
 window.openGallery = () => { document.getElementById('gallery-overlay').style.display = 'block'; document.body.style.overflow = 'hidden'; };
 window.closeGallery = () => { document.getElementById('gallery-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; };
 
@@ -276,18 +330,18 @@ function renderPosts() {
             const comms = p.comments ? Object.values(p.comments) : [];
             imgs.forEach(url => globalImages.push(url));
 
-            // SMART GRID LOGIC (+Overflow)
             let imgHtml = '';
             if (imgs.length > 0) {
+                const albumJson = JSON.stringify(imgs).replace(/"/g, '&quot;');
                 let gridClass = imgs.length >= 4 ? 'grid-more' : `grid-${imgs.length}`;
                 imgHtml = `<div class="media-container ${gridClass}">`;
                 imgs.forEach((url, index) => {
                     if (index < 3) {
-                        imgHtml += `<img src="${url}" onclick="window.zoomImg('${url}')">`;
+                        imgHtml += `<img src="${url}" onclick="window.openSlider(${albumJson}, ${index})">`;
                     } else if (index === 3) {
                         let remaining = imgs.length - 4;
                         imgHtml += `
-                            <div class="photo-more-overlay" onclick="window.zoomImg('${url}')">
+                            <div class="photo-more-overlay" onclick="window.openSlider(${albumJson}, ${index})">
                                 <img src="${url}">
                                 ${remaining > 0 ? `<div class="more-count">+${remaining}</div>` : ''}
                             </div>`;
